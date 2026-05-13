@@ -15,6 +15,8 @@
         <module>service-consumer</module>
         <module>nacos-provider</module>
         <module>nacos-consumer</module>
+        <module>lab2-provider</module>
+        <module>lab2-consumer</module>
     </modules>
 
     <properties>
