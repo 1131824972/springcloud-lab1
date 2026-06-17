@@ -5,6 +5,7 @@ spring:
     name: service-consumer
 eureka:
   client:
+    registry-fetch-interval-seconds: 5
     service-url:
       defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
 
