@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: config-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/1131824972/springcloud-lab1.git
+          default-label: main
+          search-paths: config-repo
+    bus:
+      enabled: true
+      destination: springCloudBus
+    stream:
+      bindings:
+        springCloudBusInput:
+          destination: springCloudBus
+          group: "${spring.application.name}"
+        springCloudBusOutput:
+          destination: springCloudBus
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,busrefresh
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: "${spring.cloud.client.ip-address}:${server.port}"
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+  client:
+    registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+
+---
+spring:
+  config:
+    activate:
+      on-profile: config15000
+server:
+  port: 15000
+
+---
+spring:
+  config:
+    activate:
+      on-profile: config15001
+server:
+  port: 15001
+
+---
+spring:
+  config:
+    activate:
+      on-profile: config15002
+server:
+  port: 15002

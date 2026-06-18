@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: service-consumer
+  profiles:
+    active: dev
+  cloud:
+    config:
+      label: main
+      name: service-consumer
+      profile: dev
+      discovery:
+        enabled: true
+        service-id: config-service
+    bus:
+      enabled: true
+      destination: springCloudBus
+    stream:
+      bindings:
+        springCloudBusInput:
+          destination: springCloudBus
+          group: "${spring.application.name}"
+        springCloudBusOutput:
+          destination: springCloudBus
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: "${spring.cloud.client.ip-address}:${server.port}"
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+  client:
+    registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
